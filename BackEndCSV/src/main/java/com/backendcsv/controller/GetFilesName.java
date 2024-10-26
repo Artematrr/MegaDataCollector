@@ -10,7 +10,7 @@ import java.util.List;
 @RestController
 public class GetFilesName {
 
-    private final String directoryPath = "uploads"; // Замените на путь к вашей директории
+    private final String directoryPath = "outputJson";
 
     @GetMapping("/MyFiles")
     public List<String> listFiles() {

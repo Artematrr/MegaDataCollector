@@ -21,9 +21,12 @@ public class FileController {
 
     @GetMapping("/convert")
     public String processFile(@RequestParam String fileName) {
-        String filePath = uploadDir + fileName; // Используйте uploadDir, чтобы получить полный путь
+
+        FileService.myFileFromUpload = fileName;
+
+        String filePath = uploadDir + fileName;
         try {
-            fileService.processFile(filePath); // Передаем путь в FileService
+            fileService.processFile(filePath);
             return "Файл успешно обработан и сохранён в формате JSON.";
         } catch (IOException | CsvValidationException e) {
             return "Ошибка при обработке файла: " + e.getMessage();

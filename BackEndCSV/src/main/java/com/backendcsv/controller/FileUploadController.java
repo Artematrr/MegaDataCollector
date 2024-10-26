@@ -27,6 +27,7 @@ public class FileUploadController {
 
     @PostMapping("/uploadFile")
     public String uploadFile(@RequestParam("file") MultipartFile file, Model model) {
+
         if (file.isEmpty()) {
             model.addAttribute("message", "Please select a file to upload");
             return "uploadForm";
@@ -38,13 +39,26 @@ public class FileUploadController {
                 Files.createDirectories(uploadPath);
             }
 
-            String filePath = Paths.get(uploadDir, file.getOriginalFilename()).toString();
-            Files.copy(file.getInputStream(), Paths.get(filePath));
-            model.addAttribute("message", "File uploaded successfully: " + file.getOriginalFilename());
+            String originalFileName = file.getOriginalFilename();
+            String fileName = originalFileName;
+            Path filePath = uploadPath.resolve(fileName);
+
+            int counter = 1;
+            while (Files.exists(filePath)) {
+                String fileNameWithoutExtension = originalFileName.substring(0, originalFileName.lastIndexOf('.'));
+                String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+                fileName = fileNameWithoutExtension + counter + extension;
+                filePath = uploadPath.resolve(fileName);
+                counter++;
+            }
+
+            Files.copy(file.getInputStream(), filePath);
+            model.addAttribute("message", "File uploaded successfully: " + fileName);
         } catch (IOException e) {
             model.addAttribute("message", "File upload failed: " + e.getMessage());
         }
 
         return "uploadForm";
     }
+
 }

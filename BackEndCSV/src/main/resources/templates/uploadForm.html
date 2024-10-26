@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Upload File</title>
+</head>
+<body>
+<h2>Upload JSON/CSV File</h2>
+
+<form method="POST" action="/file/uploadFile" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".json,.csv" required>
+    <button type="submit">Upload</button>
+</form>
+
+<p th:if="${message}" th:text="${message}"></p>
+
+</body>
+</html>

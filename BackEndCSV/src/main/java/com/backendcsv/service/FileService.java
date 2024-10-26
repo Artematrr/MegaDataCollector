@@ -5,6 +5,7 @@ import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.Map;
 
 @Service
 public class FileService implements FunctionalFormat{
+
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -32,6 +34,9 @@ public class FileService implements FunctionalFormat{
         } else {
             throw new IllegalArgumentException("Неподдерживаемый формат файла: " + extension);
         }
+
+
+
     }
 
     @Override
@@ -39,8 +44,9 @@ public class FileService implements FunctionalFormat{
         List<Map<String, String>> records = new ArrayList<>();
         String delimiter = detectDelimiter(fileName);
 
-        ClassPathResource resource = new ClassPathResource(fileName);
-        try (Reader reader = new InputStreamReader(resource.getInputStream());
+        // Замените ClassPathResource на File
+        File file = new File(fileName); // Используйте переменную uploadDir, если она у вас есть
+        try (Reader reader = new FileReader(file);
              CSVReader csvReader = new CSVReaderBuilder(reader)
                      .withCSVParser(new CSVParserBuilder().withSeparator(delimiter.charAt(0)).build())
                      .build()) {
@@ -68,17 +74,18 @@ public class FileService implements FunctionalFormat{
 
     @Override
     public List<Map<String, Object>> readJson(String fileName) throws IOException {
-        ClassPathResource resource = new ClassPathResource(fileName);
-        return objectMapper.readValue(resource.getInputStream(), List.class);
+        // Замените ClassPathResource на File
+        File file = new File(fileName);
+        return objectMapper.readValue(file, List.class);
     }
 
     @Override
     public String detectDelimiter(String fileName) throws IOException {
         String[] delimiters = {",", ";", "\t", "|"};
-        ClassPathResource resource = new ClassPathResource(fileName);
+        File file = new File(fileName); // Замените ClassPathResource на File
 
         StringBuilder debugOutput = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             for (int i = 0; i < 5; i++) {
                 line = reader.readLine();
@@ -90,7 +97,7 @@ public class FileService implements FunctionalFormat{
             }
         }
 
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line = reader.readLine();
             if (line != null) {
                 for (String delimiter : delimiters) {
@@ -104,6 +111,7 @@ public class FileService implements FunctionalFormat{
             }
         }
     }
+
 
     @Override
     public void writeJsonFile(String fileName, List<?> records) throws IOException {

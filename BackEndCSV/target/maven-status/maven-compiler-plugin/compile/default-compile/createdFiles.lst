@@ -1,4 +1,7 @@
 com\backendcsv\service\FunctionalFormat.class
 com\backendcsv\BackEndCsvApplication.class
+com\backendcsv\controller\JSONController.class
+com\backendcsv\controller\GetFilesName.class
 com\backendcsv\service\FileService.class
 com\backendcsv\controller\FileController.class
+com\backendcsv\controller\FileUploadController.class

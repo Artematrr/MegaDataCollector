@@ -203,13 +203,64 @@ const TableEditor = () => {
 			try {
 				await navigator.clipboard.write([
 					new ClipboardItem({
-						['image/png']: fetch(imageData).then(res => res.blob())
+						['image/png']: fetch(imageData).then(res => res.blob()),
 					}),
 				])
 				alert('График скопирован в буфер обмена!')
 			} catch (err) {
 				console.error('Ошибка при копировании графика:', err)
 			}
+		}
+	}
+
+	const handleExportToJson = async () => {
+		// Проверяем, есть ли данные в tableData
+		if (tableData.length === 0) {
+			console.error('Нет данных для экспорта.')
+			return
+		}
+
+		// Извлекаем ключи из первого объекта как названия столбцов
+		const columns = Object.keys(tableData[0])
+
+		// Создаем массив объектов для экспорта
+		const tableDataJson = tableData.map(row => {
+			const rowData = {}
+			columns.forEach(column => {
+				rowData[column] = row[column] // динамическое добавление значений
+			})
+			return rowData
+		})
+
+		const nameWithoutExtension = fileName.split('.').slice(0, -1).join('.')
+		// console.log(nameWithoutExtension)
+		// console.log(fileName)
+
+		const formData = new FormData()
+		formData.append(
+			'file',
+			new Blob([JSON.stringify(tableDataJson)], { type: 'application/json' }),
+			`${nameWithoutExtension}.json`
+		)
+
+		try {
+			const response = await axios.post(
+				'http://localhost:8080/file/uploadFile',
+				formData,
+				{
+					params: { fileName: `/${fileName}` },
+					headers: {
+						'Content-Type': 'multipart/form-data',
+					},
+				}
+			)
+			// ПОЛУЧИТЬ список всех файлов
+
+			await axios.get(`http://localhost:8080/convert?fileName=${fileName}`)
+
+			console.log('Таблица успешно экспортирована:', response.data)
+		} catch (error) {
+			console.error('Ошибка при экспорте таблицы:', error)
 		}
 	}
 
@@ -285,9 +336,8 @@ const TableEditor = () => {
 						<button onClick={handleExportChart}>
 							Экспортировать диаграмму
 						</button>
-						<button onClick={handleCopyChart}>
-							Копировать диаграмму
-						</button>
+						<button onClick={handleCopyChart}>Копировать диаграмму</button>
+						<button onClick={handleExportToJson}>Сохранить таблицу</button>
 					</div>
 					<canvas ref={chartRef} style={{ width: '100%', height: '400px' }} />
 				</>

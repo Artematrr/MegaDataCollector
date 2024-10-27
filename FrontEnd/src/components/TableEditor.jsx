@@ -7,7 +7,6 @@ import AddColumnButton from './AddColumnButton'
 import DataTable from './DataTable'
 import Chart from 'chart.js/auto'
 import jsPDF from 'jspdf'
-// import html2canvas from 'html2canvas'
 
 const TableEditor = () => {
 	const { fileName } = useParams()
@@ -26,23 +25,22 @@ const TableEditor = () => {
 	const [chartType, setChartType] = useState('bar')
 	const chartRef = useRef(null)
 
-	const [chartsData, setChartsData] = useState([]) // Для хранения данных диаграмм
+	const [chartsData, setChartsData] = useState([])
 
 	const handleExportToPDF = async () => {
 		const doc = new jsPDF()
 
-		// Перебор всех диаграмм и добавление их в PDF
 		for (let i = 0; i < chartsData.length; i++) {
 			const chartCanvas = chartsData[i]
 			const imgData = chartCanvas.toDataURL('image/png')
 
-			doc.addImage(imgData, 'PNG', 10, 10, 180, 160) // Позиционирование изображения
+			doc.addImage(imgData, 'PNG', 10, 10, 180, 160)
 			if (i < chartsData.length - 1) {
-				doc.addPage() // Добавить новую страницу, если это не последняя диаграмма
+				doc.addPage()
 			}
 		}
 
-		doc.save('charts.pdf') // Сохранить файл
+		doc.save('charts.pdf')
 	}
 
 	useEffect(() => {
@@ -236,20 +234,17 @@ const TableEditor = () => {
 	}
 
 	const handleExportToJson = async () => {
-		// Проверяем, есть ли данные в tableData
 		if (tableData.length === 0) {
 			console.error('Нет данных для экспорта.')
 			return
 		}
 
-		// Извлекаем ключи из первого объекта как названия столбцов
 		const columns = Object.keys(tableData[0])
 
-		// Создаем массив объектов для экспорта
 		const tableDataJson = tableData.map(row => {
 			const rowData = {}
 			columns.forEach(column => {
-				rowData[column] = row[column] //
+				rowData[column] = row[column]
 			})
 			return rowData
 		})
@@ -276,7 +271,6 @@ const TableEditor = () => {
 					},
 				}
 			)
-			// ПОЛУЧИТЬ список всех файлов
 
 			await axios.get(`http://localhost:8080/convert?fileName=${fileName}`)
 
@@ -429,9 +423,6 @@ const TableEditor = () => {
 }
 
 const styles = {
-	// Существующие стили...
-
-	// Стили для кнопок под таблицей
 	buttonContainer: {
 		display: 'flex',
 		gap: '10px',
@@ -449,10 +440,10 @@ const styles = {
 		transition: 'background-color 0.3s ease',
 	},
 	actionButtonHover: {
-		backgroundColor: '#45A049', // цвет при наведении
+		backgroundColor: '#45A049',
 	},
 	secondaryButton: {
-		backgroundColor: '#008CBA', // синий цвет для второстепенных кнопок
+		backgroundColor: '#008CBA',
 		color: 'white',
 		border: 'none',
 		borderRadius: '4px',

@@ -114,7 +114,7 @@ const TableEditor = () => {
 		const labels = Object.keys(intersectionData)
 		const dataValues = Object.values(intersectionData)
 
-		// Generate random colors for the chart
+
 		const colors = dataValues.map(
 			() =>
 				`rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(
@@ -129,7 +129,7 @@ const TableEditor = () => {
 					label: 'Пересечение выбранных столбцов',
 					data: dataValues,
 					backgroundColor: colors,
-					borderColor: colors.map(color => color.replace('0.6', '1')), // Use the same color for the border
+					borderColor: colors.map(color => color.replace('0.6', '1')),
 					borderWidth: 1,
 				},
 			],
@@ -185,7 +185,7 @@ const TableEditor = () => {
 					const url = URL.createObjectURL(blob)
 					const a = document.createElement('a')
 					a.href = url
-					a.download = 'chart.png' // Имя файла для скачивания
+					a.download = 'chart.png'
 					document.body.appendChild(a)
 					a.click()
 					document.body.removeChild(a)
@@ -227,7 +227,7 @@ const TableEditor = () => {
 		const tableDataJson = tableData.map(row => {
 			const rowData = {}
 			columns.forEach(column => {
-				rowData[column] = row[column] // динамическое добавление значений
+				rowData[column] = row[column] // 
 			})
 			return rowData
 		})
@@ -305,9 +305,9 @@ const TableEditor = () => {
 						}}
 					/>
 					<div style={{ margin: '20px 0' }}>
-						<h3>Выберите столбцы для графика:</h3>
+						<h3 style={styles.heading}>Выберите столбцы для графика:</h3>
 						{columns.map((col, index) => (
-							<label key={index}>
+							<label key={index} style={styles.label}>
 								<input
 									type='checkbox'
 									checked={selectedColumns.includes(col)}
@@ -318,6 +318,7 @@ const TableEditor = () => {
 											setSelectedColumns([...selectedColumns, col])
 										}
 									}}
+									style={styles.checkbox}
 								/>
 								{col}
 							</label>
@@ -325,19 +326,70 @@ const TableEditor = () => {
 						<select
 							value={chartType}
 							onChange={e => setChartType(e.target.value)}
-							style={{ marginLeft: '10px' }}
+							style={styles.select}
 						>
 							<option value='bar'>Гистограмма</option>
 							<option value='pie'>Круговая диаграмма</option>
 						</select>
-						<button onClick={handleChartGeneration}>
-							Сгенерировать график
-						</button>
-						<button onClick={handleExportChart}>
-							Экспортировать диаграмму
-						</button>
-						<button onClick={handleCopyChart}>Копировать диаграмму</button>
-						<button onClick={handleExportToJson}>Сохранить таблицу</button>
+
+						<div style={styles.buttonContainer}>
+							<button
+								style={styles.actionButton}
+								onMouseEnter={e =>
+									(e.target.style.backgroundColor =
+										styles.actionButtonHover.backgroundColor)
+								}
+								onMouseLeave={e =>
+									(e.target.style.backgroundColor =
+										styles.actionButton.backgroundColor)
+								}
+								onClick={handleChartGeneration}
+							>
+								Сгенерировать график
+							</button>
+							<button
+								style={styles.secondaryButton}
+								onMouseEnter={e =>
+									(e.target.style.backgroundColor =
+										styles.secondaryButtonHover.backgroundColor)
+								}
+								onMouseLeave={e =>
+									(e.target.style.backgroundColor =
+										styles.secondaryButton.backgroundColor)
+								}
+								onClick={handleExportChart}
+							>
+								Экспортировать диаграмму
+							</button>
+							<button
+								style={styles.secondaryButton}
+								onMouseEnter={e =>
+									(e.target.style.backgroundColor =
+										styles.secondaryButtonHover.backgroundColor)
+								}
+								onMouseLeave={e =>
+									(e.target.style.backgroundColor =
+										styles.secondaryButton.backgroundColor)
+								}
+								onClick={handleCopyChart}
+							>
+								Копировать диаграмму
+							</button>
+							<button
+								style={styles.actionButton}
+								onMouseEnter={e =>
+									(e.target.style.backgroundColor =
+										styles.actionButtonHover.backgroundColor)
+								}
+								onMouseLeave={e =>
+									(e.target.style.backgroundColor =
+										styles.actionButton.backgroundColor)
+								}
+								onClick={handleExportToJson}
+							>
+								Сохранить таблицу
+							</button>
+						</div>
 					</div>
 					<canvas ref={chartRef} style={{ width: '100%', height: '400px' }} />
 				</>
@@ -346,6 +398,68 @@ const TableEditor = () => {
 			)}
 		</div>
 	)
+}
+
+const styles = {
+	// Существующие стили...
+
+	// Стили для кнопок под таблицей
+	buttonContainer: {
+		display: 'flex',
+		gap: '10px',
+		margin: '20px 0',
+		justifyContent: 'center',
+	},
+	actionButton: {
+		backgroundColor: '#4CAF50',
+		color: 'white',
+		border: 'none',
+		borderRadius: '4px',
+		cursor: 'pointer',
+		padding: '10px 20px',
+		fontSize: '14px',
+		transition: 'background-color 0.3s ease',
+	},
+	actionButtonHover: {
+		backgroundColor: '#45A049', // цвет при наведении
+	},
+	secondaryButton: {
+		backgroundColor: '#008CBA', // синий цвет для второстепенных кнопок
+		color: 'white',
+		border: 'none',
+		borderRadius: '4px',
+		cursor: 'pointer',
+		padding: '10px 20px',
+		fontSize: '14px',
+		transition: 'background-color 0.3s ease',
+	},
+	secondaryButtonHover: {
+		backgroundColor: '#007bb5',
+	},
+	heading: {
+		fontSize: '18px',
+		marginBottom: '10px',
+		color: '#333',
+	},
+	label: {
+		display: 'flex',
+		alignItems: 'center',
+		marginBottom: '5px',
+		fontSize: '16px',
+		color: '#555',
+		cursor: 'pointer',
+	},
+	checkbox: {
+		marginRight: '8px',
+	},
+	select: {
+		marginLeft: '10px',
+		padding: '5px',
+		borderRadius: '4px',
+		border: '1px solid #ccc',
+		fontSize: '14px',
+		cursor: 'pointer',
+	},
 }
 
 export default TableEditor

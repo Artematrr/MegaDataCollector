@@ -2,15 +2,15 @@
 const AddColumnButton = ({ handleAddColumn }) => {
 	const handleClick = () => {
 		const newColumnName = prompt('Введите название нового столбца:')
-		handleAddColumn(newColumnName)
+		if (newColumnName) {
+			handleAddColumn(newColumnName);
+		}
 	}
 
 	return (
-		// <div style={addRowContainer}>
 		<button onClick={handleClick} style={addButtonStyle}>
 			+ Добавить столбец
 		</button>
-		// </div>
 	)
 }
 

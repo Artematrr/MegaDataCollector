@@ -298,9 +298,15 @@ const TableEditor = () => {
 							+ Добавить строку
 						</button>
 						<AddColumnButton
-							handleAddColumn={columnName =>
-								setColumns([...columns, columnName])
-							}
+							handleAddColumn={newColumnName => {
+								setColumns([...columns, newColumnName])
+								// Добавляем новый столбец с пустыми значениями во все строки
+								const newData = tableData.map(row => ({
+									...row,
+									[newColumnName]: '', // Инициализируем новый столбец с пустыми значениями
+								}))
+								setTableData(newData) // Обновляем состояние таблицы
+							}}
 						/>
 					</div>
 
@@ -397,7 +403,10 @@ const TableEditor = () => {
 							</button>
 						</div>
 					</div>
-					<canvas ref={chartRef} style={{ width: '100%', maxHeight: '400px', height: '0' }} />
+					<canvas
+						ref={chartRef}
+						style={{ width: '100%', maxHeight: '400px', height: '0' }}
+					/>
 
 					<DataTable
 						columns={columns}
@@ -423,100 +432,6 @@ const TableEditor = () => {
 							setTableData(newData)
 						}}
 					/>
-					{/* <div style={{ margin: '20px 0' }}>
-						<h3 style={styles.heading}>Выберите столбцы для графика:</h3>
-						{columns.map((col, index) => (
-							<label key={index} style={styles.label}>
-								<input
-									type='checkbox'
-									checked={selectedColumns.includes(col)}
-									onChange={() => {
-										if (selectedColumns.includes(col)) {
-											setSelectedColumns(selectedColumns.filter(c => c !== col))
-										} else {
-											setSelectedColumns([...selectedColumns, col])
-										}
-									}}
-									style={styles.checkbox}
-								/>
-								{col}
-							</label>
-						))}
-						<select
-							value={chartType}
-							onChange={e => setChartType(e.target.value)}
-							style={styles.select}
-						>
-							<option value='bar'>Гистограмма</option>
-							<option value='pie'>Круговая диаграмма</option>
-						</select>
-
-						<div style={styles.buttonContainer}>
-							<button
-								style={styles.actionButton}
-								onMouseEnter={e =>
-									(e.target.style.backgroundColor =
-										styles.actionButtonHover.backgroundColor)
-								}
-								onMouseLeave={e =>
-									(e.target.style.backgroundColor =
-										styles.actionButton.backgroundColor)
-								}
-								onClick={handleChartGeneration}
-							>
-								Сгенерировать график
-							</button>
-							<button
-								style={styles.secondaryButton}
-								onMouseEnter={e =>
-									(e.target.style.backgroundColor =
-										styles.secondaryButtonHover.backgroundColor)
-								}
-								onMouseLeave={e =>
-									(e.target.style.backgroundColor =
-										styles.secondaryButton.backgroundColor)
-								}
-								onClick={handleExportChart}
-							>
-								Экспортировать диаграмму
-							</button>
-							<button
-								style={styles.secondaryButton}
-								onMouseEnter={e =>
-									(e.target.style.backgroundColor =
-										styles.secondaryButtonHover.backgroundColor)
-								}
-								onMouseLeave={e =>
-									(e.target.style.backgroundColor =
-										styles.secondaryButton.backgroundColor)
-								}
-								onClick={handleCopyChart}
-							>
-								Копировать диаграмму
-							</button>
-							<button
-								style={styles.actionButton}
-								onMouseEnter={e =>
-									(e.target.style.backgroundColor =
-										styles.actionButtonHover.backgroundColor)
-								}
-								onMouseLeave={e =>
-									(e.target.style.backgroundColor =
-										styles.actionButton.backgroundColor)
-								}
-								onClick={handleExportToJson}
-							>
-								Сохранить таблицу
-							</button>
-							<button
-								style={styles.secondaryButton}
-								onClick={handleExportToPDF}
-							>
-								Экспортировать в PDF
-							</button>
-						</div>
-					</div>
-					<canvas ref={chartRef} style={{ width: '100%', maxHeight: '400px' }} /> */}
 				</>
 			) : (
 				<div style={{ textAlign: 'center' }}>Нет данных для отображения</div>

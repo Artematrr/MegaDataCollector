@@ -6,6 +6,8 @@ import FilterForm from './FilterForm'
 import AddColumnButton from './AddColumnButton'
 import DataTable from './DataTable'
 import Chart from 'chart.js/auto'
+import jsPDF from 'jspdf'
+// import html2canvas from 'html2canvas'
 
 const TableEditor = () => {
 	const { fileName } = useParams()
@@ -23,6 +25,25 @@ const TableEditor = () => {
 	const [selectedColumns, setSelectedColumns] = useState([])
 	const [chartType, setChartType] = useState('bar')
 	const chartRef = useRef(null)
+
+	const [chartsData, setChartsData] = useState([]) // Для хранения данных диаграмм
+
+	const handleExportToPDF = async () => {
+		const doc = new jsPDF()
+
+		// Перебор всех диаграмм и добавление их в PDF
+		for (let i = 0; i < chartsData.length; i++) {
+			const chartCanvas = chartsData[i]
+			const imgData = chartCanvas.toDataURL('image/png')
+
+			doc.addImage(imgData, 'PNG', 10, 10, 180, 160) // Позиционирование изображения
+			if (i < chartsData.length - 1) {
+				doc.addPage() // Добавить новую страницу, если это не последняя диаграмма
+			}
+		}
+
+		doc.save('charts.pdf') // Сохранить файл
+	}
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -114,7 +135,6 @@ const TableEditor = () => {
 		const labels = Object.keys(intersectionData)
 		const dataValues = Object.values(intersectionData)
 
-
 		const colors = dataValues.map(
 			() =>
 				`rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(
@@ -134,6 +154,8 @@ const TableEditor = () => {
 				},
 			],
 		})
+
+		setChartsData(prev => [...prev, chartRef.current])
 	}
 
 	useEffect(() => {
@@ -227,7 +249,7 @@ const TableEditor = () => {
 		const tableDataJson = tableData.map(row => {
 			const rowData = {}
 			columns.forEach(column => {
-				rowData[column] = row[column] // 
+				rowData[column] = row[column] //
 			})
 			return rowData
 		})
@@ -388,6 +410,12 @@ const TableEditor = () => {
 								onClick={handleExportToJson}
 							>
 								Сохранить таблицу
+							</button>
+							<button
+								style={styles.secondaryButton}
+								onClick={handleExportToPDF}
+							>
+								Экспортировать в PDF
 							</button>
 						</div>
 					</div>

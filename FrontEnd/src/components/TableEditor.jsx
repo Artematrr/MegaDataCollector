@@ -300,12 +300,12 @@ const TableEditor = () => {
 						<AddColumnButton
 							handleAddColumn={newColumnName => {
 								setColumns([...columns, newColumnName])
-								// Добавляем новый столбец с пустыми значениями во все строки
+
 								const newData = tableData.map(row => ({
 									...row,
-									[newColumnName]: '', // Инициализируем новый столбец с пустыми значениями
+									[newColumnName]: '',
 								}))
-								setTableData(newData) // Обновляем состояние таблицы
+								setTableData(newData)
 							}}
 						/>
 					</div>

@@ -3,7 +3,7 @@ const AddColumnButton = ({ handleAddColumn }) => {
 	const handleClick = () => {
 		const newColumnName = prompt('Введите название нового столбца:')
 		if (newColumnName) {
-			handleAddColumn(newColumnName);
+			handleAddColumn(newColumnName)
 		}
 	}
 
@@ -13,12 +13,6 @@ const AddColumnButton = ({ handleAddColumn }) => {
 		</button>
 	)
 }
-
-// const addRowContainer = {
-// 	display: 'flex',
-// 	justifyContent: 'flex-end',
-// 	marginBottom: '20px',
-// }
 
 const addButtonStyle = {
 	backgroundColor: '#4CAF50',

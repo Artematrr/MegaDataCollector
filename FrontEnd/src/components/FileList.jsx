@@ -19,13 +19,15 @@ const FileList = () => {
 	}
 
 	const handleDelete = async fileName => {
-		// Извлечение имени файла без расширения
 		const nameWithoutExtension = fileName.split('.').slice(0, -1).join('.')
 		try {
-			// Удаляем оба файла: JSON и CSV
 			await Promise.all([
-				axios.delete(`http://localhost:8080/MyFiles/${nameWithoutExtension}.json`),
-				axios.delete(`http://localhost:8080/MyFiles/${nameWithoutExtension}.csv`)
+				axios.delete(
+					`http://localhost:8080/MyFiles/${nameWithoutExtension}.json`
+				),
+				axios.delete(
+					`http://localhost:8080/MyFiles/${nameWithoutExtension}.csv`
+				),
 			])
 			fetchFiles()
 		} catch (error) {
@@ -34,7 +36,6 @@ const FileList = () => {
 	}
 
 	const handleEdit = fileName => {
-		// const nameWithoutExtension = fileName.split('.').slice(0, -1).join('.')
 		navigate(`/edit/${fileName}`)
 	}
 
@@ -75,7 +76,7 @@ const FileList = () => {
 									textOverflow: 'ellipsis',
 								}}
 							>
-								{file.split('.').slice(0, -1).join('.')} {/* Показываем имя файла без расширения */}
+								{file.split('.').slice(0, -1).join('.')}{' '}
 							</span>
 							<button
 								onClick={() => handleDelete(file)}

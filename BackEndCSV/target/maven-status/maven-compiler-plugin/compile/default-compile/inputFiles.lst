@@ -1,7 +1,9 @@
-C:\Users\1mpleX\Desktop\MegaDataCollector\BackEndCSV\src\main\java\com\backendcsv\BackEndCsvApplication.java
-C:\Users\1mpleX\Desktop\MegaDataCollector\BackEndCSV\src\main\java\com\backendcsv\controller\FileController.java
-C:\Users\1mpleX\Desktop\MegaDataCollector\BackEndCSV\src\main\java\com\backendcsv\controller\FileUploadController.java
-C:\Users\1mpleX\Desktop\MegaDataCollector\BackEndCSV\src\main\java\com\backendcsv\controller\GetFilesName.java
-C:\Users\1mpleX\Desktop\MegaDataCollector\BackEndCSV\src\main\java\com\backendcsv\controller\JSONController.java
-C:\Users\1mpleX\Desktop\MegaDataCollector\BackEndCSV\src\main\java\com\backendcsv\service\FileService.java
-C:\Users\1mpleX\Desktop\MegaDataCollector\BackEndCSV\src\main\java\com\backendcsv\service\FunctionalFormat.java
+/Users/artematrr/Documents/VS_Code/Web/Projects/MegaDataCollector/BackEndCSV/src/main/java/com/backendcsv/BackEndCsvApplication.java
+/Users/artematrr/Documents/VS_Code/Web/Projects/MegaDataCollector/BackEndCSV/src/main/java/com/backendcsv/configuration/WebConfig.java
+/Users/artematrr/Documents/VS_Code/Web/Projects/MegaDataCollector/BackEndCSV/src/main/java/com/backendcsv/controller/DeleteFileController.java
+/Users/artematrr/Documents/VS_Code/Web/Projects/MegaDataCollector/BackEndCSV/src/main/java/com/backendcsv/controller/FileController.java
+/Users/artematrr/Documents/VS_Code/Web/Projects/MegaDataCollector/BackEndCSV/src/main/java/com/backendcsv/controller/FileUploadController.java
+/Users/artematrr/Documents/VS_Code/Web/Projects/MegaDataCollector/BackEndCSV/src/main/java/com/backendcsv/controller/GetFilesName.java
+/Users/artematrr/Documents/VS_Code/Web/Projects/MegaDataCollector/BackEndCSV/src/main/java/com/backendcsv/controller/JSONController.java
+/Users/artematrr/Documents/VS_Code/Web/Projects/MegaDataCollector/BackEndCSV/src/main/java/com/backendcsv/service/FileService.java
+/Users/artematrr/Documents/VS_Code/Web/Projects/MegaDataCollector/BackEndCSV/src/main/java/com/backendcsv/service/FunctionalFormat.java

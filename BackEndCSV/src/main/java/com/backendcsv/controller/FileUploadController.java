@@ -40,25 +40,15 @@ public class FileUploadController {
             }
 
             String originalFileName = file.getOriginalFilename();
-            String fileName = originalFileName;
-            Path filePath = uploadPath.resolve(fileName);
+            Path filePath = uploadPath.resolve(originalFileName);
 
-            int counter = 1;
-            while (Files.exists(filePath)) {
-                String fileNameWithoutExtension = originalFileName.substring(0, originalFileName.lastIndexOf('.'));
-                String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
-                fileName = fileNameWithoutExtension + counter + extension;
-                filePath = uploadPath.resolve(fileName);
-                counter++;
-            }
-
-            Files.copy(file.getInputStream(), filePath);
-            model.addAttribute("message", "File uploaded successfully: " + fileName);
+            // Сохраняем файл, перезаписывая его, если он существует
+            Files.copy(file.getInputStream(), filePath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+            model.addAttribute("message", "File uploaded successfully: " + originalFileName);
         } catch (IOException e) {
             model.addAttribute("message", "File upload failed: " + e.getMessage());
         }
 
         return "uploadForm";
     }
-
 }

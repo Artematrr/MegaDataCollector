@@ -8,7 +8,6 @@ import java.util.Map;
 
 public interface FunctionalFormat {
 
-
     void processFile(String fileName) throws IOException, CsvValidationException;
     List<Map<String, String>> readCsv(String fileName) throws IOException, CsvValidationException;
     String detectDelimiter(String fileName) throws IOException;

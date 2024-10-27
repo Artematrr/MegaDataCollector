@@ -42,7 +42,6 @@ public class FileUploadController {
             String originalFileName = file.getOriginalFilename();
             Path filePath = uploadPath.resolve(originalFileName);
 
-            // Сохраняем файл, перезаписывая его, если он существует
             Files.copy(file.getInputStream(), filePath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
             model.addAttribute("message", "File uploaded successfully: " + originalFileName);
         } catch (IOException e) {

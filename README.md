@@ -1,5 +1,6 @@
 # Тема: DataCraft
 
+## название команды: MegaMozgi
 ## наш проект: MegaDataCollector
 
 ### Инструкция запуска проекта:

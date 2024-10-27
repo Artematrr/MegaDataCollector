@@ -89,7 +89,7 @@ const App = () => {
 }
 
 const appContainerStyle = {
-	height: '100%',
+	// height: '100%',
 	margin: 'auto',
 	borderRadius: '12px',
 	backgroundColor: '#FFF8F0',

@@ -71,9 +71,9 @@ const TableEditor = () => {
 	const handleAddRow = () => {
 		const newRow = {}
 		columns.forEach(col => {
-			newRow[col] = ''
+			newRow[col] = '' // Инициализируем новую строку пустыми значениями
 		})
-		setTableData([...tableData, newRow])
+		setTableData([newRow, ...tableData]) // Добавляем новую строку в начало
 	}
 
 	const handleDeleteRow = rowIndex => {
@@ -293,33 +293,17 @@ const TableEditor = () => {
 						rowLimit={rowLimit}
 						setRowLimit={setRowLimit}
 					/>
-					<AddColumnButton
-						handleAddColumn={columnName => setColumns([...columns, columnName])}
-					/>
-					<DataTable
-						columns={columns}
-						filteredData={filteredData}
-						handleCellClick={handleCellClick}
-						handleInputChange={handleInputChange}
-						editingCell={editingCell}
-						textareaRef={textareaRef}
-						handleInputBlur={handleInputBlur}
-						handleInputKeyDown={handleInputKeyDown}
-						handleAddRow={handleAddRow}
-						handleDeleteRow={handleDeleteRow}
-						handleDeleteColumn={colIndex => {
-							const newColumns = columns.filter(
-								(_, index) => index !== colIndex
-							)
-							setColumns(newColumns)
-							const newData = tableData.map(row => {
-								const newRow = { ...row }
-								delete newRow[columns[colIndex]]
-								return newRow
-							})
-							setTableData(newData)
-						}}
-					/>
+					<div style={addRowContainer}>
+						<button onClick={handleAddRow} style={addButtonStyle}>
+							+ Добавить строку
+						</button>
+						<AddColumnButton
+							handleAddColumn={columnName =>
+								setColumns([...columns, columnName])
+							}
+						/>
+					</div>
+
 					<div style={{ margin: '20px 0' }}>
 						<h3 style={styles.heading}>Выберите столбцы для графика:</h3>
 						{columns.map((col, index) => (
@@ -413,7 +397,126 @@ const TableEditor = () => {
 							</button>
 						</div>
 					</div>
-					<canvas ref={chartRef} style={{ width: '100%', height: '400px' }} />
+					<canvas ref={chartRef} style={{ width: '100%', maxHeight: '400px', height: '0' }} />
+
+					<DataTable
+						columns={columns}
+						filteredData={filteredData}
+						handleCellClick={handleCellClick}
+						handleInputChange={handleInputChange}
+						editingCell={editingCell}
+						textareaRef={textareaRef}
+						handleInputBlur={handleInputBlur}
+						handleInputKeyDown={handleInputKeyDown}
+						handleAddRow={handleAddRow}
+						handleDeleteRow={handleDeleteRow}
+						handleDeleteColumn={colIndex => {
+							const newColumns = columns.filter(
+								(_, index) => index !== colIndex
+							)
+							setColumns(newColumns)
+							const newData = tableData.map(row => {
+								const newRow = { ...row }
+								delete newRow[columns[colIndex]]
+								return newRow
+							})
+							setTableData(newData)
+						}}
+					/>
+					{/* <div style={{ margin: '20px 0' }}>
+						<h3 style={styles.heading}>Выберите столбцы для графика:</h3>
+						{columns.map((col, index) => (
+							<label key={index} style={styles.label}>
+								<input
+									type='checkbox'
+									checked={selectedColumns.includes(col)}
+									onChange={() => {
+										if (selectedColumns.includes(col)) {
+											setSelectedColumns(selectedColumns.filter(c => c !== col))
+										} else {
+											setSelectedColumns([...selectedColumns, col])
+										}
+									}}
+									style={styles.checkbox}
+								/>
+								{col}
+							</label>
+						))}
+						<select
+							value={chartType}
+							onChange={e => setChartType(e.target.value)}
+							style={styles.select}
+						>
+							<option value='bar'>Гистограмма</option>
+							<option value='pie'>Круговая диаграмма</option>
+						</select>
+
+						<div style={styles.buttonContainer}>
+							<button
+								style={styles.actionButton}
+								onMouseEnter={e =>
+									(e.target.style.backgroundColor =
+										styles.actionButtonHover.backgroundColor)
+								}
+								onMouseLeave={e =>
+									(e.target.style.backgroundColor =
+										styles.actionButton.backgroundColor)
+								}
+								onClick={handleChartGeneration}
+							>
+								Сгенерировать график
+							</button>
+							<button
+								style={styles.secondaryButton}
+								onMouseEnter={e =>
+									(e.target.style.backgroundColor =
+										styles.secondaryButtonHover.backgroundColor)
+								}
+								onMouseLeave={e =>
+									(e.target.style.backgroundColor =
+										styles.secondaryButton.backgroundColor)
+								}
+								onClick={handleExportChart}
+							>
+								Экспортировать диаграмму
+							</button>
+							<button
+								style={styles.secondaryButton}
+								onMouseEnter={e =>
+									(e.target.style.backgroundColor =
+										styles.secondaryButtonHover.backgroundColor)
+								}
+								onMouseLeave={e =>
+									(e.target.style.backgroundColor =
+										styles.secondaryButton.backgroundColor)
+								}
+								onClick={handleCopyChart}
+							>
+								Копировать диаграмму
+							</button>
+							<button
+								style={styles.actionButton}
+								onMouseEnter={e =>
+									(e.target.style.backgroundColor =
+										styles.actionButtonHover.backgroundColor)
+								}
+								onMouseLeave={e =>
+									(e.target.style.backgroundColor =
+										styles.actionButton.backgroundColor)
+								}
+								onClick={handleExportToJson}
+							>
+								Сохранить таблицу
+							</button>
+							<button
+								style={styles.secondaryButton}
+								onClick={handleExportToPDF}
+							>
+								Экспортировать в PDF
+							</button>
+						</div>
+					</div>
+					<canvas ref={chartRef} style={{ width: '100%', maxHeight: '400px' }} /> */}
 				</>
 			) : (
 				<div style={{ textAlign: 'center' }}>Нет данных для отображения</div>
@@ -440,10 +543,10 @@ const styles = {
 		transition: 'background-color 0.3s ease',
 	},
 	actionButtonHover: {
-		backgroundColor: '#45A049',
+		backgroundColor: '#45A049', // цвет при наведении
 	},
 	secondaryButton: {
-		backgroundColor: '#008CBA',
+		backgroundColor: '#008CBA', // синий цвет для второстепенных кнопок
 		color: 'white',
 		border: 'none',
 		borderRadius: '4px',
@@ -479,6 +582,23 @@ const styles = {
 		fontSize: '14px',
 		cursor: 'pointer',
 	},
+}
+
+const addButtonStyle = {
+	backgroundColor: '#4CAF50',
+	color: 'white',
+	border: 'none',
+	borderRadius: '4px',
+	cursor: 'pointer',
+	padding: '10px 15px',
+	fontSize: '16px',
+}
+
+const addRowContainer = {
+	display: 'flex',
+	justifyContent: 'flex-end',
+	marginBottom: '20px',
+	gap: '10px',
 }
 
 export default TableEditor

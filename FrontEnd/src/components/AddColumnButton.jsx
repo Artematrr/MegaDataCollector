@@ -6,19 +6,19 @@ const AddColumnButton = ({ handleAddColumn }) => {
 	}
 
 	return (
-		<div style={addRowContainer}>
-			<button onClick={handleClick} style={addButtonStyle}>
-				+ Добавить столбец
-			</button>
-		</div>
+		// <div style={addRowContainer}>
+		<button onClick={handleClick} style={addButtonStyle}>
+			+ Добавить столбец
+		</button>
+		// </div>
 	)
 }
 
-const addRowContainer = {
-	display: 'flex',
-	justifyContent: 'flex-end',
-	marginBottom: '20px',
-}
+// const addRowContainer = {
+// 	display: 'flex',
+// 	justifyContent: 'flex-end',
+// 	marginBottom: '20px',
+// }
 
 const addButtonStyle = {
 	backgroundColor: '#4CAF50',
